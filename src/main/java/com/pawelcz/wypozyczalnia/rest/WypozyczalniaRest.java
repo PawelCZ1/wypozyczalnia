@@ -19,6 +19,8 @@ import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikRepozytorium;
 import java.util.List;
 import java.util.Optional;
 
+import javax.lang.model.element.Element;
+
 @RestController
 public class WypozyczalniaRest {
 	@Autowired
@@ -63,6 +65,11 @@ public class WypozyczalniaRest {
 	@GetMapping("/samochody")
 	public List<Samochod> wszystkieSamochody(){
 		return samochodRepozytorium.findAll();
+	}
+	
+	@GetMapping("/samochody/dostepne")
+	public List<Samochod> dostepneSamochody(){
+		return wszystkieSamochody().stream().filter(element -> element.rezerwacjaSamochodu() == null).toList();
 	}
 	
 	@PostMapping("/samochody")

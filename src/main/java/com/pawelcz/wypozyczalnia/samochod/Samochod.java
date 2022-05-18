@@ -92,7 +92,9 @@ public class Samochod {
 	}
 	
 	
-	
+	public Rezerwacja rezerwacjaSamochodu() {
+		return rezerwacja;
+	}
 	
 
 	@Override
