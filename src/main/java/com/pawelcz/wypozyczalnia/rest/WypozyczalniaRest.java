@@ -45,6 +45,15 @@ public class WypozyczalniaRest {
 		return uzytkownik.get().listaRezerwacji();
 	}
 	
+	@GetMapping("/rezerwacje/{id}/archiwum")
+	public List<Rezerwacja> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
+		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
+		if(uzytkownik.isEmpty()) {
+    		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
+    	}
+		return uzytkownik.get().listaArchiwumRezerwacji();
+	}
+	
 	@PostMapping("/uzytkownicy")
 	public void dodajUzytkownika(@RequestBody Uzytkownik uzytkownik) {
 		uzytkownikRepozytorium.save(uzytkownik);
@@ -86,6 +95,7 @@ public class WypozyczalniaRest {
 					+ " wypożyczyć wybrany samochód" + id_samochodu);
 		}
 		
+	
 		
 		
 		

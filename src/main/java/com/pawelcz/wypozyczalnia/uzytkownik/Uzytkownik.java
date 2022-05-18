@@ -20,6 +20,9 @@ public class Uzytkownik {
 	
 	@OneToMany(mappedBy = "uzytkownik")
 	private List<Rezerwacja> rezerwacje;
+	@OneToMany(mappedBy = "uzytkownik")
+	private List<Rezerwacja> archiwumRezerwacji;
+	
 	
 	public Uzytkownik() {
 		
@@ -60,7 +63,13 @@ public class Uzytkownik {
 	public List<Rezerwacja> listaRezerwacji() {
 		return rezerwacje;
 	}
+	
+	
 
+	public List<Rezerwacja> listaArchiwumRezerwacji() {
+		return archiwumRezerwacji;
+	}
+	
 	@Override
 	public String toString() {
 		return "Uzytkownik [id=" + id + ", imie=" + imie + ", nazwisko=" + nazwisko + ", narodowosc=" + narodowosc
