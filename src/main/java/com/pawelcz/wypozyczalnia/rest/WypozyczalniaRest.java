@@ -36,6 +36,15 @@ public class WypozyczalniaRest {
 		return uzytkownikRepozytorium.findAll();
 	}
 	
+	@GetMapping("/rezerwacje/{id}")
+	public List<Rezerwacja> rezerwacjeWybranegoUzytkownika(@PathVariable long id) {
+		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
+		if(uzytkownik.isEmpty()) {
+    		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
+    	}
+		return uzytkownik.get().listaRezerwacji();
+	}
+	
 	@PostMapping("/uzytkownicy")
 	public void dodajUzytkownika(@RequestBody Uzytkownik uzytkownik) {
 		uzytkownikRepozytorium.save(uzytkownik);

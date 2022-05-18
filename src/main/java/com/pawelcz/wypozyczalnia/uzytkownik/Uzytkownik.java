@@ -54,6 +54,12 @@ public class Uzytkownik {
 	public void noweSaldo(int okres, int cenaZaDzien) {
 		this.saldo = saldo - okres * cenaZaDzien;
 	}
+	
+	
+
+	public List<Rezerwacja> listaRezerwacji() {
+		return rezerwacje;
+	}
 
 	@Override
 	public String toString() {
