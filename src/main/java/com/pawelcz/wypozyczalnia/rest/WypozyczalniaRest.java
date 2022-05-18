@@ -1,6 +1,7 @@
 package com.pawelcz.wypozyczalnia.rest;
 
-import org.apache.naming.java.javaURLContextFactory;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,11 +18,11 @@ import com.pawelcz.wypozyczalnia.samochod.SamochodRepozytorium;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
 import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikRepozytorium;
 
-import java.security.PublicKey;
+
 import java.util.List;
 import java.util.Optional;
 
-import javax.lang.model.element.Element;
+
 
 @RestController
 public class WypozyczalniaRest {
@@ -119,9 +120,9 @@ public class WypozyczalniaRest {
 			throw new  RuntimeException("Nie istnieje rezerwacja z id:" + id);
 		}
 		
-		Uzytkownik uzytkownik = uzytkownikRepozytorium.getById(rezerwacja.get().getUzytkownik().getId());
+		
 		rezerwacjaRepozytorium.deleteById(id);
-		//Uzytkownik.listaArchiwumRezerwacji().add(rezerwacja.get());
+		
 	}
 
 }
