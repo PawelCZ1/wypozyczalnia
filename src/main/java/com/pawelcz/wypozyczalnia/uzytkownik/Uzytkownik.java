@@ -48,6 +48,12 @@ public class Uzytkownik {
 	public byte getWiek() {
 		return wiek;
 	}
+	
+	
+
+	public void noweSaldo(int okres, int cenaZaDzien) {
+		this.saldo = saldo - okres * cenaZaDzien;
+	}
 
 	@Override
 	public String toString() {

@@ -30,6 +30,12 @@ public class Rezerwacja {
 		
 	}
 	
+	public Rezerwacja(Uzytkownik uzytkownik, Samochod samochod, int pozostaleDni) {
+		this.uzytkownik = uzytkownik;
+		this.samochod = samochod;
+		this.pozostaleDni = pozostaleDni;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -42,6 +48,26 @@ public class Rezerwacja {
 	public int getPozostaleDni() {
 		return pozostaleDni;
 	}
+
+	public void setUzytkownik(Uzytkownik uzytkownik) {
+		this.uzytkownik = uzytkownik;
+	}
+
+	public void setSamochod(Samochod samochod) {
+		this.samochod = samochod;
+	}
+
+	public void setPozostaleDni(int pozostaleDni) {
+		this.pozostaleDni = pozostaleDni;
+	}
+
+	@Override
+	public String toString() {
+		return "Rezerwacja [id=" + id + ", uzytkownik=" + uzytkownik.getId() + ", samochod=" + samochod.getId() + ", pozostaleDni="
+				+ pozostaleDni + "]";
+	}
+	
+	
 	
 	
 	

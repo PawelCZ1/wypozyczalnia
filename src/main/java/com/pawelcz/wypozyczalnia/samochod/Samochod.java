@@ -93,9 +93,7 @@ public class Samochod {
 	
 	
 	
-	public Rezerwacja getRezerwacja() {
-		return rezerwacja;
-	}
+	
 
 	@Override
 	public String toString() {
