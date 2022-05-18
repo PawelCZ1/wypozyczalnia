@@ -56,9 +56,15 @@ public class Uzytkownik {
 	
 	
 
-	public void noweSaldo(int okres, int cenaZaDzien) {
+	public void saldoPoRezerwacji(int okres, int cenaZaDzien) {
 		this.saldo = saldo - okres * cenaZaDzien;
 	}
+	
+	public void saldoPrzedRezerwacja(int okres, int cenaZaDzien) {
+		this.saldo = saldo + okres * cenaZaDzien;
+	}
+	
+	
 	
 	
 
