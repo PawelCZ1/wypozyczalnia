@@ -55,7 +55,8 @@ public class WypozyczalniaRest {
 		if(uzytkownik.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
     	}
-		return uzytkownik.get().listaArchiwumRezerwacji();
+		return Uzytkownik.listaArchiwumRezerwacji().stream()
+				.filter(element -> element.getUzytkownik().getId() == id ).toList();
 	}
 	
 	@PostMapping("/uzytkownicy")
