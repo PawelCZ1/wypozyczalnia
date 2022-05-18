@@ -3,6 +3,7 @@ package com.pawelcz.wypozyczalnia.rest;
 import org.apache.naming.java.javaURLContextFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.pawelcz.wypozyczalnia.samochod.SamochodRepozytorium;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
 import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikRepozytorium;
 
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,22 +95,32 @@ public class WypozyczalniaRest {
 		if(samochod.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje samochód z id:" + id_samochodu);
     	}
-		if(okres * uzytkownik.get().getSaldo() >= 0) {
-			Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
-			uzytkownik.get().noweSaldo(okres, samochod.get().getCenaZaDzien());
-			rezerwacjaRepozytorium.save(rezerwacja);
+		if(samochod.get().rezerwacjaSamochodu() == null) {
+			if(okres * uzytkownik.get().getSaldo() >= 0) {
+				Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
+				uzytkownik.get().noweSaldo(okres, samochod.get().getCenaZaDzien());
+				Uzytkownik.listaArchiwumRezerwacji().add(rezerwacja);
+				rezerwacjaRepozytorium.save(rezerwacja);
+			}else {
+				throw new RuntimeException("Użytkownik nie posiada wystarczającej kwoty aby"
+						+ " wypożyczyć wybrany samochód");
+			}	
 		}else {
-			throw new  RuntimeException("Użytkownik nie posiada wystarczającej kwoty aby"
-					+ " wypożyczyć wybrany samochód" + id_samochodu);
-		}
-		
-	
-		
-		
-		
-		
+			throw new RuntimeException("Samochód już jest zarezerwowany");
+		}		
 	}
 	
-
+	@DeleteMapping("/rezerwacje/{id}")
+	public void usunRezerwacje(@PathVariable long id) {
+		Optional<Rezerwacja> rezerwacja = rezerwacjaRepozytorium.findById(id);
+		
+		if(rezerwacja.isEmpty()) {
+			throw new  RuntimeException("Nie istnieje rezerwacja z id:" + id);
+		}
+		
+		Uzytkownik uzytkownik = uzytkownikRepozytorium.getById(rezerwacja.get().getUzytkownik().getId());
+		rezerwacjaRepozytorium.deleteById(id);
+		//Uzytkownik.listaArchiwumRezerwacji().add(rezerwacja.get());
+	}
 
 }

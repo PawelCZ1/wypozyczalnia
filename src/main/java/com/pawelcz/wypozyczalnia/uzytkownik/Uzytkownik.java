@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +22,8 @@ public class Uzytkownik {
 	
 	@OneToMany(mappedBy = "uzytkownik")
 	private List<Rezerwacja> rezerwacje;
-	@OneToMany(mappedBy = "uzytkownik")
-	private List<Rezerwacja> archiwumRezerwacji;
+	
+	static private List<Rezerwacja> archiwumRezerwacji = new ArrayList<>();
 	
 	
 	public Uzytkownik() {
@@ -66,7 +68,7 @@ public class Uzytkownik {
 	
 	
 
-	public List<Rezerwacja> listaArchiwumRezerwacji() {
+	static public List<Rezerwacja> listaArchiwumRezerwacji() {
 		return archiwumRezerwacji;
 	}
 	
