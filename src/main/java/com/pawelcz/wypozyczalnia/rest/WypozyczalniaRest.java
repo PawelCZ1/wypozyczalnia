@@ -35,7 +35,7 @@ public class WypozyczalniaRest {
 	@Autowired
 	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
 	@Autowired 
-	private RezerwacjaArchiwumRepozytorium rezerwacjaArchwiumRepozytorium;
+	private RezerwacjaArchiwumRepozytorium rezerwacjaArchiwumRepozytorium;
 	
 	
 	
@@ -60,7 +60,7 @@ public class WypozyczalniaRest {
 		if(uzytkownik.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
     	}
-		return uzytkownik.get().listaRezerwacjiArchwium();
+		return uzytkownik.get().listaRezerwacjiArchiwum();
 	}
 	
 	@PostMapping("/uzytkownicy")
@@ -107,7 +107,7 @@ public class WypozyczalniaRest {
 				uzytkownik.get().saldoPoRezerwacji(okres, samochod.get().getCenaZaDzien());
 				
 				rezerwacjaRepozytorium.save(rezerwacja);
-				rezerwacjaArchwiumRepozytorium.save(rezerwacjaArchwium);
+				rezerwacjaArchiwumRepozytorium.save(rezerwacjaArchwium);
 			}else {
 				throw new RuntimeException("Użytkownik nie posiada wystarczającej kwoty aby"
 						+ " wypożyczyć wybrany samochód");

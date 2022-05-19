@@ -74,7 +74,7 @@ public class Uzytkownik {
 		return rezerwacje;
 	}
 	
-	public List<RezerwacjaArchiwum> listaRezerwacjiArchwium() {
+	public List<RezerwacjaArchiwum> listaRezerwacjiArchiwum() {
 		return rezerwacjeArchiwum;
 	}
 	
