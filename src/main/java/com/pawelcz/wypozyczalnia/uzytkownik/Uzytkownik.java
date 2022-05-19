@@ -1,10 +1,12 @@
 package com.pawelcz.wypozyczalnia.uzytkownik;
 
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwium;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,9 @@ public class Uzytkownik {
 	
 	@OneToMany(mappedBy = "uzytkownik")
 	private List<Rezerwacja> rezerwacje;
-	
-	static private List<Rezerwacja> archiwumRezerwacji = new ArrayList<>();
-	
+	@OneToMany(mappedBy = "uzytkownik")
+	private List<RezerwacjaArchwium> rezerwacjeArchwium;
+
 	
 	public Uzytkownik() {
 		
@@ -72,11 +74,10 @@ public class Uzytkownik {
 		return rezerwacje;
 	}
 	
-	
-
-	static public List<Rezerwacja> listaArchiwumRezerwacji() {
-		return archiwumRezerwacji;
+	public List<RezerwacjaArchwium> listaRezerwacjiArchwium() {
+		return rezerwacjeArchwium;
 	}
+	
 	
 	@Override
 	public String toString() {

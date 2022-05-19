@@ -12,7 +12,8 @@ import com.pawelcz.wypozyczalnia.samochod.Samochod;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
 
 @Entity
-public class Rezerwacja {
+public class RezerwacjaArchwium {
+	
 	@Id
 	@GeneratedValue
 	private long id;
@@ -27,20 +28,18 @@ public class Rezerwacja {
 	
 	
 	
-	public Rezerwacja() {
+	public RezerwacjaArchwium() {
 		
 	}
 	
-	public Rezerwacja(Uzytkownik uzytkownik, Samochod samochod, int pozostaleDni) {
+	public RezerwacjaArchwium(Uzytkownik uzytkownik, Samochod samochod, int pozostaleDni) {
 		this.uzytkownik = uzytkownik;
 		this.samochod = samochod;
 		this.pozostaleDni = pozostaleDni;
 		
 	}
 	
-	public long getId() {
-		return id;
-	}
+	
 	public Uzytkownik getUzytkownik() {
 		return uzytkownik;
 	}
@@ -65,9 +64,11 @@ public class Rezerwacja {
 	
 	
 
+	
+
 	@Override
 	public String toString() {
-		return "Rezerwacja [id=" + id + ", uzytkownik=" + uzytkownik.getId() + ", samochod=" + samochod.getId() + ", pozostaleDni="
+		return "Rezerwacja [uzytkownik=" + uzytkownik.getId() + ", samochod=" + samochod.getId() + ", pozostaleDni="
 				+ pozostaleDni + "]";
 	}
 	

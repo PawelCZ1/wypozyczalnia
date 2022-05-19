@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwium;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwiumRepozytorium;
 import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaRepozytorium;
 import com.pawelcz.wypozyczalnia.samochod.Samochod;
 import com.pawelcz.wypozyczalnia.samochod.SamochodRepozytorium;
@@ -32,6 +34,8 @@ public class WypozyczalniaRest {
 	private UzytkownikRepozytorium uzytkownikRepozytorium;
 	@Autowired
 	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
+	@Autowired 
+	RezerwacjaArchwiumRepozytorium rezerwacjaArchwiumRepozytorium;
 	
 	
 	
@@ -51,13 +55,12 @@ public class WypozyczalniaRest {
 	}
 	
 	@GetMapping("/rezerwacje/{id}/archiwum")
-	public List<Rezerwacja> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
+	public List<RezerwacjaArchwium> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
 		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
 		if(uzytkownik.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
     	}
-		return Uzytkownik.listaArchiwumRezerwacji().stream()
-				.filter(element -> element.getUzytkownik().getId() == id ).toList();
+		return uzytkownik.get().listaRezerwacjiArchwium();
 	}
 	
 	@PostMapping("/uzytkownicy")
@@ -100,9 +103,11 @@ public class WypozyczalniaRest {
 		if(samochod.get().rezerwacjaSamochodu() == null) {
 			if(okres * uzytkownik.get().getSaldo() >= 0) {
 				Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
+				RezerwacjaArchwium rezerwacjaArchwium = new RezerwacjaArchwium(uzytkownik.get(), samochod.get(), okres);
 				uzytkownik.get().saldoPoRezerwacji(okres, samochod.get().getCenaZaDzien());
-				Uzytkownik.listaArchiwumRezerwacji().add(rezerwacja);
+				
 				rezerwacjaRepozytorium.save(rezerwacja);
+				rezerwacjaArchwiumRepozytorium.save(rezerwacjaArchwium);
 			}else {
 				throw new RuntimeException("Użytkownik nie posiada wystarczającej kwoty aby"
 						+ " wypożyczyć wybrany samochód");
@@ -123,9 +128,7 @@ public class WypozyczalniaRest {
 		rezerwacja.get().getUzytkownik().saldoPrzedRezerwacja(rezerwacja.get().getPozostaleDni()
 				, rezerwacja.get().getSamochod().getCenaZaDzien());
 		
-		
 		rezerwacjaRepozytorium.deleteById(id);
-		
 	}
 
 }
