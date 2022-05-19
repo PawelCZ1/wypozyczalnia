@@ -35,7 +35,7 @@ public class WypozyczalniaRest {
 	@Autowired
 	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
 	@Autowired 
-	RezerwacjaArchwiumRepozytorium rezerwacjaArchwiumRepozytorium;
+	private RezerwacjaArchwiumRepozytorium rezerwacjaArchwiumRepozytorium;
 	
 	
 	
