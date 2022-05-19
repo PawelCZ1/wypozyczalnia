@@ -12,7 +12,7 @@ import com.pawelcz.wypozyczalnia.samochod.Samochod;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
 
 @Entity
-public class RezerwacjaArchwium {
+public class RezerwacjaArchiwum {
 	
 	@Id
 	@GeneratedValue
@@ -28,11 +28,11 @@ public class RezerwacjaArchwium {
 	
 	
 	
-	public RezerwacjaArchwium() {
+	public RezerwacjaArchiwum() {
 		
 	}
 	
-	public RezerwacjaArchwium(Uzytkownik uzytkownik, Samochod samochod, int pozostaleDni) {
+	public RezerwacjaArchiwum(Uzytkownik uzytkownik, Samochod samochod, int pozostaleDni) {
 		this.uzytkownik = uzytkownik;
 		this.samochod = samochod;
 		this.pozostaleDni = pozostaleDni;

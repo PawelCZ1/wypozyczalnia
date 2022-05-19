@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwium;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwiumRepozytorium;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwum;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwumRepozytorium;
 import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaRepozytorium;
 import com.pawelcz.wypozyczalnia.samochod.Samochod;
 import com.pawelcz.wypozyczalnia.samochod.SamochodRepozytorium;
@@ -35,7 +35,7 @@ public class WypozyczalniaRest {
 	@Autowired
 	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
 	@Autowired 
-	private RezerwacjaArchwiumRepozytorium rezerwacjaArchwiumRepozytorium;
+	private RezerwacjaArchiwumRepozytorium rezerwacjaArchwiumRepozytorium;
 	
 	
 	
@@ -55,7 +55,7 @@ public class WypozyczalniaRest {
 	}
 	
 	@GetMapping("/rezerwacje/{id}/archiwum")
-	public List<RezerwacjaArchwium> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
+	public List<RezerwacjaArchiwum> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
 		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
 		if(uzytkownik.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
@@ -103,7 +103,7 @@ public class WypozyczalniaRest {
 		if(samochod.get().rezerwacjaSamochodu() == null) {
 			if(okres * uzytkownik.get().getSaldo() >= 0) {
 				Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
-				RezerwacjaArchwium rezerwacjaArchwium = new RezerwacjaArchwium(uzytkownik.get(), samochod.get(), okres);
+				RezerwacjaArchiwum rezerwacjaArchwium = new RezerwacjaArchiwum(uzytkownik.get(), samochod.get(), okres);
 				uzytkownik.get().saldoPoRezerwacji(okres, samochod.get().getCenaZaDzien());
 				
 				rezerwacjaRepozytorium.save(rezerwacja);

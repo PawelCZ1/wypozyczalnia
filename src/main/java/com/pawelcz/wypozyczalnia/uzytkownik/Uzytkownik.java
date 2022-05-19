@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchwium;
+import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Uzytkownik {
 	@OneToMany(mappedBy = "uzytkownik")
 	private List<Rezerwacja> rezerwacje;
 	@OneToMany(mappedBy = "uzytkownik")
-	private List<RezerwacjaArchwium> rezerwacjeArchwium;
+	private List<RezerwacjaArchiwum> rezerwacjeArchiwum;
 
 	
 	public Uzytkownik() {
@@ -74,8 +74,8 @@ public class Uzytkownik {
 		return rezerwacje;
 	}
 	
-	public List<RezerwacjaArchwium> listaRezerwacjiArchwium() {
-		return rezerwacjeArchwium;
+	public List<RezerwacjaArchiwum> listaRezerwacjiArchwium() {
+		return rezerwacjeArchiwum;
 	}
 	
 	
