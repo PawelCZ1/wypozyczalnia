@@ -39,12 +39,13 @@ public class WypozyczalniaRest {
 	
 	
 	
-	
+	//Pokazuje wszystkich dostępnych użytkowników
 	@GetMapping("/uzytkownicy")
 	public List<Uzytkownik> wszyscyUzytkownicy(){
 		return uzytkownikRepozytorium.findAll();
 	}
 	
+	//Pokazuje wszystkie aktualne rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}")
 	public List<Rezerwacja> rezerwacjeWybranegoUzytkownika(@PathVariable long id) {
 		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
@@ -54,6 +55,7 @@ public class WypozyczalniaRest {
 		return uzytkownik.get().listaRezerwacji();
 	}
 	
+	//Pokazuje wszystkie rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}/archiwum")
 	public List<RezerwacjaArchiwum> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
 		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
@@ -63,33 +65,39 @@ public class WypozyczalniaRest {
 		return uzytkownik.get().listaRezerwacjiArchiwum();
 	}
 	
+	//Służy do tworzenia użytkowników
 	@PostMapping("/uzytkownicy")
 	public void dodajUzytkownika(@RequestBody Uzytkownik uzytkownik) {
 		uzytkownikRepozytorium.save(uzytkownik);
 		
 	}
 	
+	//Pokazuje wszystkie samochody
 	@GetMapping("/samochody")
 	public List<Samochod> wszystkieSamochody(){
 		return samochodRepozytorium.findAll();
 	}
 	
+	//Pokazuje wszystkie dostępne samochody
 	@GetMapping("/samochody/dostepne")
 	public List<Samochod> dostepneSamochody(){
 		return wszystkieSamochody().stream().filter(element -> element.rezerwacjaSamochodu() == null).toList();
 	}
 	
+	//Służy do tworzenia samochodów
 	@PostMapping("/samochody")
 	public void dodajSamochod(@RequestBody Samochod samochod) {
 		samochodRepozytorium.save(samochod);
 		
 	}
 	
+	//Pokazuje wszystkie aktualne rezerwacje
 	@GetMapping("/rezerwacje")
 	public List<Rezerwacja> wszystkieRezerwacje(){
 		return rezerwacjaRepozytorium.findAll();
 	}
 	
+	//Służy do tworzenia rezerwacji
 	@PostMapping("/rezerwacje/{id_uzytkownika},{id_samochodu},{okres}")
 	public void dodajRezerwacje(@PathVariable long id_uzytkownika, @PathVariable long id_samochodu, @PathVariable int okres) {
 		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id_uzytkownika);
@@ -117,6 +125,7 @@ public class WypozyczalniaRest {
 		}		
 	}
 	
+	//Służy do usuwania rezerwacji, kwota zostaje zwrócona
 	@DeleteMapping("/rezerwacje/{id}")
 	public void usunRezerwacje(@PathVariable long id) {
 		Optional<Rezerwacja> rezerwacja = rezerwacjaRepozytorium.findById(id);
