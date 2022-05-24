@@ -101,7 +101,7 @@ public class WypozyczalniaRest {
     		throw new  RuntimeException("Nie istnieje samochód z id:" + id_samochodu);
     	}
 		if(samochod.get().rezerwacjaSamochodu() == null) {
-			if(okres * uzytkownik.get().getSaldo() >= 0) {
+			if(okres * samochod.get().getCenaZaDzien() <= uzytkownik.get().getSaldo()) {
 				Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
 				RezerwacjaArchiwum rezerwacjaArchwium = new RezerwacjaArchiwum(uzytkownik.get(), samochod.get(), okres);
 				uzytkownik.get().saldoPoRezerwacji(okres, samochod.get().getCenaZaDzien());
