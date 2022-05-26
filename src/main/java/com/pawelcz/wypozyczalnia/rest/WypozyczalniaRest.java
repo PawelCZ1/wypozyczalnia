@@ -26,26 +26,22 @@ import java.util.Optional;
 @RestController
 public class WypozyczalniaRest {
 
-	@Autowired
-	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
-	@Autowired 
-	private RezerwacjaArchiwumRepozytorium rezerwacjaArchiwumRepozytorium;
+
 	@Autowired
 	private final UzytkownikService uzytkownikService;
 	@Autowired
 	private final SamochodService samochodService;
 	@Autowired
 	private final RezerwacjaService rezerwacjaService;
-	@Autowired
-	private final RezerwacjaArchiwumService rezerwacjaArchiwumService;
+
 
 
 	public WypozyczalniaRest(UzytkownikService uzytkownikService, SamochodService samochodService,
-							 RezerwacjaService rezerwacjaService, RezerwacjaArchiwumService rezerwacjaArchiwumService) {
+							 RezerwacjaService rezerwacjaService) {
 		this.uzytkownikService = uzytkownikService;
 		this.samochodService = samochodService;
 		this.rezerwacjaService = rezerwacjaService;
-		this.rezerwacjaArchiwumService = rezerwacjaArchiwumService;
+
 	}
 
 
