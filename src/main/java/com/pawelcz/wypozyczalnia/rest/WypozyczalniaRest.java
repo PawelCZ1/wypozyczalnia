@@ -33,15 +33,16 @@ public class WypozyczalniaRest {
 	private final SamochodService samochodService;
 	@Autowired
 	private final RezerwacjaService rezerwacjaService;
-
+	@Autowired
+	private final RezerwacjaArchiwumService rezerwacjaArchiwumService;
 
 
 	public WypozyczalniaRest(UzytkownikService uzytkownikService, SamochodService samochodService,
-							 RezerwacjaService rezerwacjaService) {
+							 RezerwacjaService rezerwacjaService, RezerwacjaArchiwumService rezerwacjaArchiwumService) {
 		this.uzytkownikService = uzytkownikService;
 		this.samochodService = samochodService;
 		this.rezerwacjaService = rezerwacjaService;
-
+		this.rezerwacjaArchiwumService = rezerwacjaArchiwumService;
 	}
 
 
@@ -61,11 +62,7 @@ public class WypozyczalniaRest {
 	//Pokazuje wszystkie rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}/archiwum")
 	public List<RezerwacjaArchiwum> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
-		Optional<Uzytkownik> uzytkownik = uzytkownikService.znajdzUzytkownika(id);
-		if(uzytkownik.isEmpty()) {
-    		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
-    	}
-		return uzytkownik.get().listaRezerwacjiArchiwum();
+		return rezerwacjaArchiwumService.archwiumRezerwacjiWybranegoUzytkownika(id);
 	}
 	
 	//Służy do tworzenia użytkowników
