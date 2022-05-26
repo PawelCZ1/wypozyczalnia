@@ -3,6 +3,9 @@ package com.pawelcz.wypozyczalnia.rest;
 
 
 
+import com.pawelcz.wypozyczalnia.rezerwacja.*;
+import com.pawelcz.wypozyczalnia.samochod.SamochodService;
+import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwum;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwumRepozytorium;
-import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaRepozytorium;
 import com.pawelcz.wypozyczalnia.samochod.Samochod;
-import com.pawelcz.wypozyczalnia.samochod.SamochodRepozytorium;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
-import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikRepozytorium;
 
 
 import java.util.List;
@@ -28,37 +25,47 @@ import java.util.Optional;
 
 @RestController
 public class WypozyczalniaRest {
-	@Autowired
-	private SamochodRepozytorium samochodRepozytorium;
-	@Autowired
-	private UzytkownikRepozytorium uzytkownikRepozytorium;
+
 	@Autowired
 	private RezerwacjaRepozytorium rezerwacjaRepozytorium;
 	@Autowired 
 	private RezerwacjaArchiwumRepozytorium rezerwacjaArchiwumRepozytorium;
-	
-	
-	
+	@Autowired
+	private final UzytkownikService uzytkownikService;
+	@Autowired
+	private final SamochodService samochodService;
+	@Autowired
+	private final RezerwacjaService rezerwacjaService;
+	@Autowired
+	private final RezerwacjaArchiwumService rezerwacjaArchiwumService;
+
+
+	public WypozyczalniaRest(UzytkownikService uzytkownikService, SamochodService samochodService,
+							 RezerwacjaService rezerwacjaService, RezerwacjaArchiwumService rezerwacjaArchiwumService) {
+		this.uzytkownikService = uzytkownikService;
+		this.samochodService = samochodService;
+		this.rezerwacjaService = rezerwacjaService;
+		this.rezerwacjaArchiwumService = rezerwacjaArchiwumService;
+	}
+
+
+
 	//Pokazuje wszystkich dostępnych użytkowników
 	@GetMapping("/uzytkownicy")
 	public List<Uzytkownik> wszyscyUzytkownicy(){
-		return uzytkownikRepozytorium.findAll();
+		return uzytkownikService.wszyscyUzytkownicy();
 	}
 	
 	//Pokazuje wszystkie aktualne rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}")
 	public List<Rezerwacja> rezerwacjeWybranegoUzytkownika(@PathVariable long id) {
-		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
-		if(uzytkownik.isEmpty()) {
-    		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
-    	}
-		return uzytkownik.get().listaRezerwacji();
+		return rezerwacjaService.rezerwacjeWybranegoUzytkownika(id);
 	}
 	
 	//Pokazuje wszystkie rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}/archiwum")
 	public List<RezerwacjaArchiwum> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
-		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id);
+		Optional<Uzytkownik> uzytkownik = uzytkownikService.znajdzUzytkownika(id);
 		if(uzytkownik.isEmpty()) {
     		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id);
     	}
@@ -68,76 +75,45 @@ public class WypozyczalniaRest {
 	//Służy do tworzenia użytkowników
 	@PostMapping("/uzytkownicy")
 	public void dodajUzytkownika(@RequestBody Uzytkownik uzytkownik) {
-		uzytkownikRepozytorium.save(uzytkownik);
+		uzytkownikService.zapiszUzytkownika(uzytkownik);
 		
 	}
 	
 	//Pokazuje wszystkie samochody
 	@GetMapping("/samochody")
 	public List<Samochod> wszystkieSamochody(){
-		return samochodRepozytorium.findAll();
+		return samochodService.wszystkieSamochody();
 	}
 	
 	//Pokazuje wszystkie dostępne samochody
 	@GetMapping("/samochody/dostepne")
 	public List<Samochod> dostepneSamochody(){
-		return wszystkieSamochody().stream().filter(element -> element.rezerwacjaSamochodu() == null).toList();
+		return samochodService.dostepneSamochody();
 	}
 	
 	//Służy do tworzenia samochodów
 	@PostMapping("/samochody")
 	public void dodajSamochod(@RequestBody Samochod samochod) {
-		samochodRepozytorium.save(samochod);
+		samochodService.dodajSamochod(samochod);
 		
 	}
 	
 	//Pokazuje wszystkie aktualne rezerwacje
 	@GetMapping("/rezerwacje")
 	public List<Rezerwacja> wszystkieRezerwacje(){
-		return rezerwacjaRepozytorium.findAll();
+		return rezerwacjaService.wszystkieRezerwacje();
 	}
 	
 	//Służy do tworzenia rezerwacji
 	@PostMapping("/rezerwacje/{id_uzytkownika},{id_samochodu},{okres}")
 	public void dodajRezerwacje(@PathVariable long id_uzytkownika, @PathVariable long id_samochodu, @PathVariable int okres) {
-		Optional<Uzytkownik> uzytkownik = uzytkownikRepozytorium.findById(id_uzytkownika);
-		Optional<Samochod> samochod = samochodRepozytorium.findById(id_samochodu);
-		if(uzytkownik.isEmpty()) {
-    		throw new  RuntimeException("Nie istnieje użytkownik z id:" + id_uzytkownika);
-    	}
-		if(samochod.isEmpty()) {
-    		throw new  RuntimeException("Nie istnieje samochód z id:" + id_samochodu);
-    	}
-		if(samochod.get().rezerwacjaSamochodu() == null) {
-			if(okres * samochod.get().getCenaZaDzien() <= uzytkownik.get().getSaldo()) {
-				Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(), samochod.get(), okres);
-				RezerwacjaArchiwum rezerwacjaArchwium = new RezerwacjaArchiwum(uzytkownik.get(), samochod.get(), okres);
-				uzytkownik.get().saldoPoRezerwacji(okres, samochod.get().getCenaZaDzien());
-				
-				rezerwacjaRepozytorium.save(rezerwacja);
-				rezerwacjaArchiwumRepozytorium.save(rezerwacjaArchwium);
-			}else {
-				throw new RuntimeException("Użytkownik nie posiada wystarczającej kwoty aby"
-						+ " wypożyczyć wybrany samochód");
-			}	
-		}else {
-			throw new RuntimeException("Samochód już jest zarezerwowany");
-		}		
+		rezerwacjaService.dodajRezerwacje(id_uzytkownika, id_samochodu, okres);
 	}
 	
 	//Służy do usuwania rezerwacji, kwota zostaje zwrócona
 	@DeleteMapping("/rezerwacje/{id}")
 	public void usunRezerwacje(@PathVariable long id) {
-		Optional<Rezerwacja> rezerwacja = rezerwacjaRepozytorium.findById(id);
-		
-		if(rezerwacja.isEmpty()) {
-			throw new  RuntimeException("Nie istnieje rezerwacja z id:" + id);
-		}
-		
-		rezerwacja.get().getUzytkownik().saldoPrzedRezerwacja(rezerwacja.get().getPozostaleDni()
-				, rezerwacja.get().getSamochod().getCenaZaDzien());
-		
-		rezerwacjaRepozytorium.deleteById(id);
+		rezerwacjaService.usunRezerwacje(id);
 	}
 
 }
