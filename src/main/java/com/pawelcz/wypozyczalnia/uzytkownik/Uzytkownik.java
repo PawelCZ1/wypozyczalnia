@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
 import com.pawelcz.wypozyczalnia.rezerwacja.RezerwacjaArchiwum;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
