@@ -1,16 +1,17 @@
 package com.pawelcz.wypozyczalnia.samochod;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+
+
 
 import com.pawelcz.wypozyczalnia.rezerwacja.Rezerwacja;
 
@@ -34,10 +35,11 @@ public class Samochod {
 	private byte liczbaMiejsc;
 	private float spalanie;
 	private int cenaZaDzien;
-	@OneToOne(mappedBy = "samochod")
-    @JoinColumn( name = "rezerwacja" )
-    @NotFound( action = NotFoundAction.IGNORE )
-	private Rezerwacja rezerwacja;
+	@OneToMany(mappedBy = "samochod", fetch = FetchType.LAZY) 
+	private List<Rezerwacja> rezerwacje;
+	
+   
+	
 	
 	public Samochod() {
 		
@@ -91,10 +93,18 @@ public class Samochod {
 		return cenaZaDzien;
 	}
 	
-	
-	public Rezerwacja rezerwacjaSamochodu() {
-		return rezerwacja;
+
+	public boolean Dostepnosc() {
+		return rezerwacje.stream().filter
+		(element -> element.aktualnosc())
+		.toList().size() == 0;
 	}
+
+	public List<Rezerwacja> listaRezerwacji() {
+		return rezerwacje;
+	}
+	
+	
 	
 
 	@Override

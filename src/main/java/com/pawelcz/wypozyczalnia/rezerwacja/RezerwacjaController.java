@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class RezerwacjaController {
 
     private final RezerwacjaService rezerwacjaService;
-    private final RezerwacjaArchiwumService rezerwacjaArchiwumService;
+    
 
 
-    public RezerwacjaController(RezerwacjaService rezerwacjaService, RezerwacjaArchiwumService rezerwacjaArchiwumService) {
+    public RezerwacjaController(RezerwacjaService rezerwacjaService) {
         this.rezerwacjaService = rezerwacjaService;
-        this.rezerwacjaArchiwumService = rezerwacjaArchiwumService;
+        
     }
     
 
     //Pokazuje wszystkie aktualne rezerwacje
 	@GetMapping("/rezerwacje")
-	public List<Rezerwacja> wszystkieRezerwacje(){
-		return rezerwacjaService.wszystkieRezerwacje();
+	public List<Rezerwacja> aktualneRezerwacje(){
+		return rezerwacjaService.aktualneRezerwacje();
 	}
 
     //Pokazuje wszystkie aktualne rezerwacje dla użytkownika z wybranym id
@@ -45,10 +45,18 @@ public class RezerwacjaController {
 		rezerwacjaService.usunRezerwacje(id);
 	}
 
-    //Pokazuje wszystkie rezerwacje dla użytkownika z wybranym id
 	@GetMapping("/rezerwacje/{id}/archiwum")
-	public List<RezerwacjaArchiwum> archwiumRezerwacjiWybranegoUzytkownika(@PathVariable long id) {
-		return rezerwacjaArchiwumService.archwiumRezerwacjiWybranegoUzytkownika(id);
+	List<Rezerwacja> archiwumRezerwacjiWybranegoUzytkownika(@PathVariable long id){
+		return rezerwacjaService.archiwumRezerwacjiWybranegoUzytkownika(id);
+
 	}
+
+	@GetMapping("/rezerwacje/archiwum")
+	List<Rezerwacja> archiwumRezerwacji(){
+		return rezerwacjaService.archiwumRezerwacji();
+	}
+
+	
+    
     
 }

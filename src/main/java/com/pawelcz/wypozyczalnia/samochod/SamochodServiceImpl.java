@@ -28,7 +28,7 @@ public class SamochodServiceImpl implements SamochodService {
 
     @Override
     public List<Samochod> dostepneSamochody() {
-        return wszystkieSamochody().stream().filter(element -> element.rezerwacjaSamochodu() == null).toList();
+        return wszystkieSamochody().stream().filter(element -> element.Dostepnosc()).toList();
     }
 
     @Override
