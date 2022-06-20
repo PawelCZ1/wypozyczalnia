@@ -94,7 +94,7 @@ public class Samochod {
 	}
 	
 
-	public boolean Dostepnosc() {
+	public boolean dostepnosc() {
 		return rezerwacje.stream().filter
 		(element -> element.aktualnosc())
 		.toList().size() == 0;

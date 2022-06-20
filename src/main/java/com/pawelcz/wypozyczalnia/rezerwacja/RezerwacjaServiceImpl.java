@@ -58,7 +58,7 @@ public class RezerwacjaServiceImpl implements RezerwacjaService {
         if(samochod.isEmpty()) {
             throw new  RuntimeException("Nie istnieje samochód z id:" + id_samochodu);
         }
-        if(samochod.get().Dostepnosc()) {
+        if(samochod.get().dostepnosc()) {
             if(okres * samochod.get().getCenaZaDzien() <= uzytkownik.get().getSaldo()) {
                 Rezerwacja rezerwacja = new Rezerwacja(uzytkownik.get(),samochod.get(), LocalDate.now().plusDays(okres));
                 

@@ -1,6 +1,10 @@
 package com.pawelcz.wypozyczalnia.samochod;
 
+
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
 
 
 

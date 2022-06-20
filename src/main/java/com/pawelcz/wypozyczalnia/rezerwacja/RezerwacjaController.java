@@ -44,13 +44,13 @@ public class RezerwacjaController {
 	public void usunRezerwacje(@PathVariable long id) {
 		rezerwacjaService.usunRezerwacje(id);
 	}
-
+		//Pokazuje wszystkie rezerwacje wybranego użytkownika
 	@GetMapping("/rezerwacje/{id}/archiwum")
 	List<Rezerwacja> archiwumRezerwacjiWybranegoUzytkownika(@PathVariable long id){
 		return rezerwacjaService.archiwumRezerwacjiWybranegoUzytkownika(id);
 
 	}
-
+		//Pokazuje wszystkie rezerwacje
 	@GetMapping("/rezerwacje/archiwum")
 	List<Rezerwacja> archiwumRezerwacji(){
 		return rezerwacjaService.archiwumRezerwacji();
