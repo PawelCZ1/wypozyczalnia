@@ -4,6 +4,8 @@ import com.pawelcz.wypozyczalnia.samochod.Samochod;
 import com.pawelcz.wypozyczalnia.samochod.SamochodService;
 import com.pawelcz.wypozyczalnia.uzytkownik.Uzytkownik;
 import com.pawelcz.wypozyczalnia.uzytkownik.UzytkownikService;
+
+
 import org.springframework.stereotype.Service;
 
 
@@ -91,7 +93,9 @@ public class RezerwacjaServiceImpl implements RezerwacjaService {
         rezerwacja.get().getUzytkownik().saldoPrzedRezerwacja((int)Period.between(LocalDate.now(), rezerwacja.get().getDataZakonczenia()).getDays()
                 , rezerwacja.get().getSamochod().getCenaZaDzien());
 
+        rezerwacja.get().setDataZakonczenia(LocalDate.now());        
         rezerwacja.get().setAktualne(false);
+        
         rezerwacjaRepozytorium.save(rezerwacja.get());
  
     }
